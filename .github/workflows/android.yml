@@ -22,6 +22,11 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          cache-read-only: false
+          gradle-home-cache-includes: |
+            caches
+            notifications
 
       - name: Create .env file
         run: echo "GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}" > .env
@@ -35,6 +40,11 @@ jobs:
       - name: Run Unit Tests
         run: ./gradlew test
 
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: debug-apk
+          path: app/build/outputs/apk/debug/*.apk
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
